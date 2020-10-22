@@ -1,2 +1,1 @@
 # EduTriails
-# EduTriails
