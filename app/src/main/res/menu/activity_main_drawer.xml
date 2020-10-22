@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single" android:id="@+id/group1">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_discover"
+            android:title="@string/menu_discover" />
+        <item
+            android:id="@+id/nav_start_tour"
+            android:icon="@drawable/ic_menu_start_tour"
+            android:title="@string/menu_start_tour" />
+        <item
+            android:id="@+id/nav_create_tour"
+            android:icon="@drawable/ic_menu_create_tour"
+            android:title="@string/menu_create_tour" />
+    </group>
+    <group android:checkableBehavior="single" android:id="@+id/group2">
+        <item
+            android:id="@+id/nav_achievements"
+            android:icon="@drawable/ic_menu_achievements"
+            android:title="@string/menu_achievements" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="@string/menu_settings" />
+        <item
+            android:id="@+id/nav_my_edu"
+            android:icon="@drawable/ic_menu_my_edu"
+            android:title="@string/menu_my_edu" />
+
+    </group>
+</menu>
