@@ -1,0 +1,24 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=BC:97:CB:3D:1C:79:89:80:E7:E1:7B:C3:F5:50:F6:33:18:64:C7:F4%3Bcom.example.edutrails
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    com.example.edutrails
+
+    SHA-1 certificate fingerprint:
+    BC:97:CB:3D:1C:79:89:80:E7:E1:7B:C3:F5:50:F6:33:18:64:C7:F4
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAFPDQRRkHtjJXUOR8bTblqvl-rGxDY4xg</string>
+</resources>

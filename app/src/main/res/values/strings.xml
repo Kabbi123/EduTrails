@@ -15,4 +15,5 @@
     <string name="menu_achievements">Errungenschaften</string>
     <string name="menu_settings">Einstellungen</string>
     <string name="menu_my_edu">Mein Edu</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
