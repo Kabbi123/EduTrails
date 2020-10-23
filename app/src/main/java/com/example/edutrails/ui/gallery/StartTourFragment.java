@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class GalleryFragment extends Fragment {
+public class StartTourFragment extends Fragment {
 
     MapView mMapView;
     private GoogleMap googleMap;
