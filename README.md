@@ -1,1 +1,1 @@
-# EduTriails
+# EduTrails
