@@ -36,8 +36,6 @@ public class StartTourFragment extends Fragment {
     MapView mMapView;
     private GoogleMap googleMap;
     public final int REQEST_CODE_PERMISSION = 111;
-    public double latitudeForMarkedPosition;
-    public double longitudeForMarkedPosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,9 +84,6 @@ public class StartTourFragment extends Fragment {
                         // Setting the title for the marker.
                         // This will be displayed on taping the marker
                         markerOptions.title(latLng.latitude + " : " + latLng.longitude);
-
-                        // Clears the previously touched position
-                        googleMap.clear();
 
                         // Animating to the touched position
                         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
