@@ -1,16 +1,16 @@
-package com.example.edutrails.ui.slideshow;
+package com.example.edutrails.ui.discover;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class CreateTourViewModel extends ViewModel {
+public class DiscoverViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public CreateTourViewModel() {
+    public DiscoverViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is slideshow fragment");
+        mText.setValue("This is home fragment");
     }
 
     public LiveData<String> getText() {

@@ -7,37 +7,37 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.edutrails.ui.home.DiscoverFragment"
+        android:name="com.example.edutrails.ui.discover.DiscoverFragment"
         android:label="@string/menu_discover"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_start_tour"
-        android:name="com.example.edutrails.ui.gallery.StartTourFragment"
+        android:name="com.example.edutrails.ui.startTour.StartTourFragment"
         android:label="@string/menu_start_tour"
         tools:layout="@layout/fragment_start_tour" />
 
     <fragment
         android:id="@+id/nav_create_tour"
-        android:name="com.example.edutrails.ui.slideshow.CreateTourFragment"
+        android:name="com.example.edutrails.ui.createTour.CreateTourFragment"
         android:label="@string/menu_create_tour"
         tools:layout="@layout/fragment_create_tour" />
 
     <fragment
         android:id="@+id/nav_achievements"
-        android:name="com.example.edutrails.ui.slideshow.CreateTourFragment"
+        android:name="com.example.edutrails.ui.createTour.CreateTourFragment"
         android:label="@string/menu_achievements"
         tools:layout="@layout/fragment_achievements" />
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.example.edutrails.ui.slideshow.CreateTourFragment"
+        android:name="com.example.edutrails.ui.createTour.CreateTourFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/nav_my_edu"
-        android:name="com.example.edutrails.ui.slideshow.CreateTourFragment"
+        android:name="com.example.edutrails.ui.createTour.CreateTourFragment"
         android:label="@string/menu_my_edu"
         tools:layout="@layout/fragment_my_edu" />
 </navigation>

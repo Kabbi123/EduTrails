@@ -1,4 +1,4 @@
-package com.example.edutrails.ui.home;
+package com.example.edutrails.ui.discover;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,14 +22,7 @@ public class DiscoverFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 new ViewModelProvider(this).get(DiscoverViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        View root = inflater.inflate(R.layout.create_dialog_one, container, false);
         return root;
     }
 }

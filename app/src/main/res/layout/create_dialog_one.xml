@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#185ABC"
+    android:baselineAligned="true"
+    android:orientation="horizontal"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:baselineAlignBottom="true"
+        android:scaleType="center"
+        app:srcCompat="@drawable/ic_menu_manage" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="10dp"
+            android:text="@string/dialog_chose_destination"
+
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/text_size_dialog1" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="259dp"
+            android:layout_height="58dp"
+            android:layout_weight="1"
+            android:text="@string/dialog_chose_destination2"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/text_size_dialog2" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="OK"
+        android:textColor="#FFFFFF"
+        app:backgroundTint="#185ABC"
+        app:iconTint="#185ABC" />
+</LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.edutrails.ui.gallery;
+package com.example.edutrails.ui.startTour;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
