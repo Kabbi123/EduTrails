@@ -27,13 +27,17 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 
 public class StartTourFragment extends Fragment {
 
     MapView mMapView;
     private GoogleMap googleMap;
     public final int REQEST_CODE_PERMISSION = 111;
+    public double latitudeForMarkedPosition;
+    public double longitudeForMarkedPosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,7 +70,37 @@ public class StartTourFragment extends Fragment {
                 }
 
                 googleMap.setMyLocationEnabled(true);
+
+                // Setting a click event handler for the map
+                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+
+                        // Creating a marker
+                        MarkerOptions markerOptions = new MarkerOptions();
+
+                        // Setting the position for the marker
+                        markerOptions.position(latLng);
+
+                        // Setting the title for the marker.
+                        // This will be displayed on taping the marker
+                        markerOptions.title(latLng.latitude + " : " + latLng.longitude);
+
+                        // Clears the previously touched position
+                        googleMap.clear();
+
+                        // Animating to the touched position
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
+                        // Placing a marker on the touched position
+                        googleMap.addMarker(markerOptions);
+                    }
+                });
             }
+
+
+
         });
 
         return rootView;
