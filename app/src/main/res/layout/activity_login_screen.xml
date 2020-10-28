@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="#083b66">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="1dp"
+        app:srcCompat="@drawable/edutrails" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/imageView"
+        android:layout_marginTop="120dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:textColorHint="#fff"
+            android:textColor="#fff"
+            android:hint="Email"
+            android:foregroundTint="#fff"
+            android:backgroundTint="#fff"
+            android:focusable="false"
+            android:focusedByDefault="false"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:textColorHint="#fff"
+            android:textColor="#fff"
+            android:hint="Passwort"
+            android:focusable="false"
+            android:foregroundTint="#fff"
+            android:focusedByDefault="false"
+            android:backgroundTint="#fff"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="Passwort vergessen?"
+            android:textColor="#42962a"
+            />
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:text="Einloggen"
+            android:textAllCaps="false"
+            android:background="@drawable/custom_rounded_corners"
+            android:textColor="#ffffff" />
+        <!--
+                <androidx.cardview.widget.CardView
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    app:cardBackgroundColor="#42962a"
+                    app:cardCornerRadius="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_gravity="center"
+                    app:cardMaxElevation="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="sans-serif"
+                        android:text="Einloggen"
+                        android:textColor="#ffffff"
+                        android:textSize="14sp" />
+
+                </androidx.cardview.widget.CardView>
+        -->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#f9f7f7"
+                android:text="Noch keinen Account?"
+                />
+
+            <TextView
+                android:id="@+id/tosignup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="sans-serif"
+                android:text="Registrieren"
+                android:textColor="#42962a"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
