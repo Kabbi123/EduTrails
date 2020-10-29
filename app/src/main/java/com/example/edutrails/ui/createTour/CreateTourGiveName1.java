@@ -1,4 +1,4 @@
- package com.example.edutrails.ui.createTour;
+package com.example.edutrails.ui.createTour;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -24,20 +24,31 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.button.MaterialButton;
 
 
-public class CreateTourFragment extends Fragment {
+public class CreateTourGiveName1 extends Fragment {
 
     MapView mMapView;
     private GoogleMap googleMap;
     public final int REQEST_CODE_PERMISSION = 111;
     private static final String TAG = StartTourFragment.class.getSimpleName();
+    MaterialButton okButton;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_start_tour, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_create_tour_give_name1, container, false);
 
-        mMapView = (MapView) rootView.findViewById(R.id.mapView);
+        mMapView = (MapView) rootView.findViewById(R.id.mapViewGiveName);
         mMapView.onCreate(savedInstanceState);
+
+        okButton = (MaterialButton) rootView.findViewById(R.id.okButton);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                changeFragment();
+            }
+        });
+
 
         mMapView.onResume(); // needed to get the map to display immediately
 
@@ -102,6 +113,16 @@ public class CreateTourFragment extends Fragment {
 
         return rootView;
     }
+
+
+    private void changeFragment() {
+        CreateTourFragment nextFrag= new CreateTourFragment();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.enterName, nextFrag, "findThisFragment")
+                .addToBackStack(null)
+                .commit();
+    }
+
 
     private void getCurrentLocation() {
     }
