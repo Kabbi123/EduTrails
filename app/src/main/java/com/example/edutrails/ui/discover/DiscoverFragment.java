@@ -31,15 +31,18 @@ import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class DiscoverFragment extends Fragment {
+public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
 
     MapView mMapView;
     private GoogleMap googleMap;
     public final int REQEST_CODE_PERMISSION = 111;
     private static final String TAG = com.example.edutrails.ui.startTour.StartTourFragment.class.getSimpleName();
+    Marker dreiBild;
+    Marker meditation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,6 +81,17 @@ public class DiscoverFragment extends Fragment {
                     getCurrentLocation();
                 }
 
+                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    if (marker.equals(dreiBild))
+                    {
+                        Toast.makeText(getActivity().getApplicationContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+                    }
+                    return false;
+                }
+                });
+
                 googleMap.setMyLocationEnabled(true);
 
                 // Setting a click event handler for the map
@@ -101,6 +115,7 @@ public class DiscoverFragment extends Fragment {
 
                         // Placing a marker on the touched position
                         googleMap.addMarker(markerOptions);
+
                     }
                 });
             }
@@ -118,8 +133,8 @@ public class DiscoverFragment extends Fragment {
         LatLng ulmerSpitze = new LatLng(48.421900, 9.956953);
         LatLng fourOpenRectangles = new LatLng(48.422235, 9.957506);
 
-        mMap.addMarker(new MarkerOptions().position(dreiBildsaeulen).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Drei Bildsäulen"));
-        mMap.addMarker(new MarkerOptions().position(raumZurMeditation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Raum zur Meditation"));
+        dreiBild = mMap.addMarker(new MarkerOptions().position(dreiBildsaeulen).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Drei Bildsäulen"));
+        meditation = mMap.addMarker(new MarkerOptions().position(raumZurMeditation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Raum zur Meditation"));
         mMap.addMarker(new MarkerOptions().position(ulmerSpitze).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Ulmer Spitze"));
         mMap.addMarker(new MarkerOptions().position(fourOpenRectangles).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Four Open Rectangles"));
     }
@@ -197,5 +212,11 @@ public class DiscoverFragment extends Fragment {
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+    }
+
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        return false;
     }
 }

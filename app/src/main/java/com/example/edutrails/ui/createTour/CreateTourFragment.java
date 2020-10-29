@@ -88,6 +88,8 @@ public class CreateTourFragment extends Fragment {
 
                         // Placing a marker on the touched position
                         googleMap.addMarker(markerOptions);
+
+
                     }
                 });
             }

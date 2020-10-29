@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/nav_start_tour"
-        android:name="com.example.edutrails.ui.startTour.StartTourFragment"
+        android:name="com.example.edutrails.ui.startTour.StartTourChose"
         android:label="@string/menu_start_tour"
         tools:layout="@layout/fragment_start_tour" />
 

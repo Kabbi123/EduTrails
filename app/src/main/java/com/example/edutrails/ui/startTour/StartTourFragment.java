@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
@@ -46,6 +48,7 @@ public class StartTourFragment extends Fragment {
 
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
+        ((ContentScreen) getActivity()).getSupportActionBar().setTitle("Kunstpfad Uni Ulm");
 
         mMapView.onResume(); // needed to get the map to display immediately
 
@@ -76,6 +79,7 @@ public class StartTourFragment extends Fragment {
                 } else {
                     getCurrentLocation();
                 }
+
 
                 googleMap.setMyLocationEnabled(true);
 
@@ -111,16 +115,31 @@ public class StartTourFragment extends Fragment {
         return rootView;
     }
 
+    private String calcDistance() {
+        double lat1 = 48.4218;
+        double lon1 = 9.9557;
+        Location loc1 = new Location("");
+        loc1.setLatitude(lat1);
+        loc1.setLongitude(lon1);
+        Location loc2 = new Location("");
+        loc2.setLatitude(48.421459);
+        loc2.setLongitude(9.956280);
+        float distanceInMeters = Math.round(loc1.distanceTo(loc2));
+        String distance = Float.toString(distanceInMeters);
+        return distance;
+    }
+
     private void createMarkers(GoogleMap mMap) {
         LatLng raumZurMeditation = new LatLng(48.421333, 9.955561);
         LatLng dreiBildsaeulen = new LatLng(48.421459, 9.956280);
         LatLng ulmerSpitze = new LatLng(48.421900, 9.956953);
         LatLng fourOpenRectangles = new LatLng(48.422235, 9.957506);
 
-        mMap.addMarker(new MarkerOptions().position(dreiBildsaeulen).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Drei Bildsäulen"));
+        mMap.addMarker(new MarkerOptions().position(dreiBildsaeulen).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)).title(calcDistance())).showInfoWindow();
         mMap.addMarker(new MarkerOptions().position(raumZurMeditation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Raum zur Meditation"));
         mMap.addMarker(new MarkerOptions().position(ulmerSpitze).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Ulmer Spitze"));
         mMap.addMarker(new MarkerOptions().position(fourOpenRectangles).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Four Open Rectangles"));
+
     }
 
     private void zoomToUni(GoogleMap mMap) {
