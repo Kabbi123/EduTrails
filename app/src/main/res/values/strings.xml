@@ -19,6 +19,8 @@
 
     <string name="dialog_chose_destination">Ziel auswählen</string>
     <string name="dialog_chose_destination2">Auf die Karte tippen um \n ein Ziel zu wählen</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

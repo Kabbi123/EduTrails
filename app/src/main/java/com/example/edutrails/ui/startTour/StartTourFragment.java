@@ -1,8 +1,10 @@
 package com.example.edutrails.ui.startTour;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,11 +18,16 @@ import androidx.fragment.app.Fragment;
 
 import com.example.edutrails.ContentScreen;
 import com.example.edutrails.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -42,6 +49,7 @@ public class StartTourFragment extends Fragment {
 
         mMapView.onResume(); // needed to get the map to display immediately
 
+
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
@@ -51,6 +59,9 @@ public class StartTourFragment extends Fragment {
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
+
+                createMarkers(mMap);
+                zoomToUni(mMap);
 
                 googleMap = mMap;
                 getMapStyle(googleMap);
@@ -98,6 +109,28 @@ public class StartTourFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private void createMarkers(GoogleMap mMap) {
+        LatLng raumZurMeditation = new LatLng(48.421333, 9.955561);
+        LatLng dreiBildsaeulen = new LatLng(48.421459, 9.956280);
+        LatLng ulmerSpitze = new LatLng(48.421900, 9.956953);
+        LatLng fourOpenRectangles = new LatLng(48.422235, 9.957506);
+
+        mMap.addMarker(new MarkerOptions().position(dreiBildsaeulen).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Drei Bildsäulen"));
+        mMap.addMarker(new MarkerOptions().position(raumZurMeditation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Raum zur Meditation"));
+        mMap.addMarker(new MarkerOptions().position(ulmerSpitze).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Ulmer Spitze"));
+        mMap.addMarker(new MarkerOptions().position(fourOpenRectangles).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Four Open Rectangles"));
+    }
+
+    private void zoomToUni(GoogleMap mMap) {
+        LatLng uni = new LatLng(48.4218, 9.9557);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(uni));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(uni,15));
+        // Zoom in, animating the camera.
+        mMap.animateCamera(CameraUpdateFactory.zoomIn());
+        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
     }
 
     private void getMapStyle(GoogleMap googleMap) {

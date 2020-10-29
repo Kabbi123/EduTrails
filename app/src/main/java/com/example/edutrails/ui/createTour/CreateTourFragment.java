@@ -1,4 +1,4 @@
-package com.example.edutrails.ui.createTour;
+ package com.example.edutrails.ui.createTour;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
