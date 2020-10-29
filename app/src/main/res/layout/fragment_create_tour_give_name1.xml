@@ -37,11 +37,13 @@
             android:layout_marginLeft="10dp"/>
 
         <TextView
+            android:layout_marginBottom="20dp"
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Give your Path a name!" />
+            android:text="Benenne deinen Lehrpfad" />
+
         <EditText
             android:id="@+id/editTextTextPassword"
             android:layout_width="wrap_content"
@@ -51,13 +53,13 @@
             android:inputType="textLongMessage" />
 
         <com.google.android.material.button.MaterialButton
+            android:layout_marginTop="5dp"
             android:id="@+id/okButton"
+            style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="OK"
-            android:textColor="@color/blue"
-            style="?attr/borderlessButtonStyle"
-            />
+            android:textColor="@color/blue" />
 
 
     </LinearLayout>

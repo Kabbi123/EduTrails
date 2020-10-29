@@ -86,11 +86,17 @@ public class DiscoverOverlay extends Fragment implements GoogleMap.OnMarkerClick
                     public boolean onMarkerClick(Marker marker) {
                         if (marker.equals(dreiBild))
                         {
-                            Toast.makeText(getActivity().getApplicationContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+                            discoverOverlay();
                         }
+                        if (marker.equals(meditation))
+                        {
+                            discoverOverlay2();
+                        }
+
                         return false;
                     }
                 });
+
 
                 googleMap.setMyLocationEnabled(true);
 
@@ -213,6 +219,24 @@ public class DiscoverOverlay extends Fragment implements GoogleMap.OnMarkerClick
         super.onLowMemory();
         mMapView.onLowMemory();
     }
+    private void discoverOverlay2() {
+
+        DiscoverOverlay2 nextFrag= new DiscoverOverlay2();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.overlay1, nextFrag, "findThisFragment")
+                .addToBackStack(null)
+                .commit();
+
+    }
+
+    private void discoverOverlay() {
+        DiscoverOverlay nextFrag= new DiscoverOverlay();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.overlay1, nextFrag, "findThisFragment")
+                .addToBackStack(null)
+                .commit();
+    }
+
 
 
     @Override
