@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.edutrails.ContentScreen;
 import com.example.edutrails.R;
-import com.example.edutrails.ui.startTour.StartTourFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,7 +35,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
+public class DiscoverOverlay4 extends Fragment implements GoogleMap.OnMarkerClickListener {
 
     MapView mMapView;
     private GoogleMap googleMap;
@@ -47,9 +46,9 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_start_tour, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_discover_overlay4, container, false);
 
-        mMapView = (MapView) rootView.findViewById(R.id.mapView);
+        mMapView = (MapView) rootView.findViewById(R.id.mapViewOverlay4);
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume(); // needed to get the map to display immediately
@@ -66,7 +65,7 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
             public void onMapReady(GoogleMap mMap) {
 
                 createMarkers(mMap);
-                zoomToUni(mMap);
+                zoomToMarker(mMap);
 
                 googleMap = mMap;
                 getMapStyle(googleMap);
@@ -83,28 +82,28 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
                 }
 
                 googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    if (marker.equals(dreiBild))
-                    {
-                        discoverOverlay();
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        if (marker.equals(dreiBild))
+                        {
+                            discoverOverlay();
+                        }
+                        if (marker.equals(meditation))
+                        {
+                            discoverOverlay2();
+                        }
+                        if (marker.equals(wegkapelleM))
+                        {
+                            discoverOverlay3();
+                        }
+                        if (marker.equals(laPoete))
+                        {
+                            discoverOverlay4();
+                        }
+                        return false;
                     }
-                    if (marker.equals(meditation))
-                    {
-                        discoverOverlay2();
-                    }
-                    if (marker.equals(wegkapelleM))
-                    {
-                        discoverOverlay3();
-                    }
-                    if (marker.equals(laPoete))
-                    {
-                        discoverOverlay4();
-                    }
-
-                    return false;
-                }
                 });
+
 
                 googleMap.setMyLocationEnabled(true);
 
@@ -135,48 +134,9 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
             }
 
 
-
         });
 
         return rootView;
-    }
-
-    private void discoverOverlay2() {
-
-            DiscoverOverlay2 nextFrag= new DiscoverOverlay2();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.mapView, nextFrag, "findThisFragment")
-                    .addToBackStack(null)
-                    .commit();
-
-    }
-
-    private void discoverOverlay4() {
-
-        DiscoverOverlay4 nextFrag= new DiscoverOverlay4();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mapView, nextFrag, "findThisFragment")
-                .addToBackStack(null)
-                .commit();
-
-    }
-
-    private void discoverOverlay3() {
-
-        DiscoverOverlay3 nextFrag= new DiscoverOverlay3();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mapView, nextFrag, "findThisFragment")
-                .addToBackStack(null)
-                .commit();
-
-    }
-
-    private void discoverOverlay() {
-        DiscoverOverlay nextFrag= new DiscoverOverlay();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mapView, nextFrag, "findThisFragment")
-                .addToBackStack(null)
-                .commit();
     }
 
     private void createMarkers(GoogleMap mMap) {
@@ -192,24 +152,61 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
         laPoete = mMap.addMarker(new MarkerOptions().position(poete).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("poete"));
         dreiBild = mMap.addMarker(new MarkerOptions().position(dreiBildsaeulen).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Drei Bildsäulen"));
         meditation = mMap.addMarker(new MarkerOptions().position(raumZurMeditation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Raum zur Meditation"));
-        wegkapelleM = mMap.addMarker(new MarkerOptions().position(wegkapelle).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Wegkapelle"));
+        wegkapelleM =  mMap.addMarker(new MarkerOptions().position(wegkapelle).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Wegkapelle"));
         mMap.addMarker(new MarkerOptions().position(ulmerSpitze).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Ulmer Spitze"));
         mMap.addMarker(new MarkerOptions().position(fourOpenRectangles).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Four Open Rectangles"));
+
         mMap.addMarker(new MarkerOptions().position(klosterhof).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Klosterhof"));
 
 
     }
 
-
-    private void zoomToUni(GoogleMap mMap) {
-        LatLng uni = new LatLng(48.4218, 9.9557);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(uni));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(uni,15));
+    private void zoomToMarker(GoogleMap mMap) {
+        LatLng marker = new LatLng(48.423343, 9.952609);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker, 15));
         // Zoom in, animating the camera.
         mMap.animateCamera(CameraUpdateFactory.zoomIn());
         // Zoom out to zoom level 10, animating with a duration of 2 seconds.
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(18), 0050, null);
     }
+    private void discoverOverlay2() {
+
+        DiscoverOverlay2 nextFrag= new DiscoverOverlay2();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.overlay2, nextFrag, "findThisFragment")
+                .addToBackStack(null)
+                .commit();
+
+    }
+
+
+    private void discoverOverlay4() {
+
+        DiscoverOverlay4 nextFrag= new DiscoverOverlay4();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.overlay4, nextFrag, "findThisFragment")
+                .addToBackStack(null)
+                .commit();
+
+    }
+    private void discoverOverlay3() {
+
+        DiscoverOverlay3 nextFrag= new DiscoverOverlay3();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.overlay3, nextFrag, "findThisFragment")
+                .addToBackStack(null)
+                .commit();
+
+    }
+    private void discoverOverlay() {
+        DiscoverOverlay nextFrag= new DiscoverOverlay();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.overlay2, nextFrag, "findThisFragment")
+                .addToBackStack(null)
+                .commit();
+    }
+
 
     private void getMapStyle(GoogleMap googleMap) {
         try {
@@ -242,8 +239,8 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == REQEST_CODE_PERMISSION && grantResults.length>0){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == REQEST_CODE_PERMISSION && grantResults.length > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getCurrentLocation();
             } else {
                 Toast.makeText(getActivity().getApplicationContext(), "Permission denied", Toast.LENGTH_SHORT).show();
