@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/nav_achievements"
-        android:name="com.example.edutrails.ui.createTour.CreateTourFragment"
+        android:name="com.example.edutrails.ui.AchievementsFragment"
         android:label="@string/menu_achievements"
         tools:layout="@layout/fragment_achievements" />
 
