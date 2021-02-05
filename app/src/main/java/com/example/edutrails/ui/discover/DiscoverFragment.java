@@ -3,9 +3,13 @@ package com.example.edutrails.ui.discover;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +39,8 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import static android.content.Context.LOCATION_SERVICE;
+
 
 public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
 
@@ -44,6 +50,11 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
     private static final String TAG = com.example.edutrails.ui.startTour.StartTourFragment.class.getSimpleName();
     Marker dreiBild;
     Marker meditation, wegkapelleM, laPoete, firstPOI;
+
+    LocationManager mLocationManager;
+    Location currentLocation;
+    double longitude, latitude;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +66,57 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
         mMapView.onResume(); // needed to get the map to display immediately
 
 
+
+        /**get location*/
+
+        mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext()
+                , Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQEST_CODE_PERMISSION
+            );
+
+        } else {
+            getCurrentLocation();
+        }
+
+        currentLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        longitude = currentLocation.getLongitude();
+        latitude = currentLocation.getLatitude();
+
+        /**get location**/
+
+        final LocationListener mLocationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(final Location location) {
+                longitude = currentLocation.getLongitude();
+                latitude = currentLocation.getLatitude();
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, mLocationListener);
+
+
+
+        // initialize map
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
@@ -202,6 +264,11 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
         LatLng poete = new LatLng(48.423343, 9.952609);
         LatLng firstPOIT = new LatLng(48.423573, 9.956659);
 
+        Location locationTets = new Location("");
+        locationTets.setLatitude(48.422235);
+        locationTets.setLongitude(9.957506);
+        float distance = currentLocation.distanceTo(locationTets);
+        String dis = Float.toString(distance);
 
         firstPOI = mMap.addMarker(new MarkerOptions().position(firstPOIT).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("FirstPOI"));
         laPoete = mMap.addMarker(new MarkerOptions().position(poete).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("poete"));
@@ -209,7 +276,7 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
         meditation = mMap.addMarker(new MarkerOptions().position(raumZurMeditation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Raum zur Meditation"));
         wegkapelleM = mMap.addMarker(new MarkerOptions().position(wegkapelle).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Wegkapelle"));
         mMap.addMarker(new MarkerOptions().position(ulmerSpitze).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Ulmer Spitze"));
-        mMap.addMarker(new MarkerOptions().position(fourOpenRectangles).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Four Open Rectangles"));
+        mMap.addMarker(new MarkerOptions().position(fourOpenRectangles).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title(dis));
         mMap.addMarker(new MarkerOptions().position(klosterhof).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Klosterhof"));
 
 
