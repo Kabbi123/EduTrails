@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.edutrails.ContentScreen;
 import com.example.edutrails.R;
-import com.example.edutrails.ui.startTour.StartTourFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,20 +35,21 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
+public class FirstAchievementOverlay extends Fragment implements GoogleMap.OnMarkerClickListener {
 
     MapView mMapView;
     private GoogleMap googleMap;
     public final int REQEST_CODE_PERMISSION = 111;
     private static final String TAG = com.example.edutrails.ui.startTour.StartTourFragment.class.getSimpleName();
     Marker dreiBild;
-    Marker meditation, wegkapelleM, laPoete, firstPOI;
+    Marker meditation;
+    private Marker firstPOI;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_start_tour, container, false);
+        View rootView = inflater.inflate(R.layout.first_poi_overlay, container, false);
 
-        mMapView = (MapView) rootView.findViewById(R.id.mapView);
+        mMapView = (MapView) rootView.findViewById(R.id.mapViewFirstPoiOverlay);
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume(); // needed to get the map to display immediately
@@ -83,31 +83,21 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
                 }
 
                 googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    if (marker.equals(dreiBild))
-                    {
-                        discoverOverlay();
-                    }
-                    if (marker.equals(meditation))
-                    {
-                        discoverOverlay2();
-                    }
-                    if (marker.equals(wegkapelleM))
-                    {
-                        discoverOverlay3();
-                    }
-                    if (marker.equals(laPoete))
-                    {
-                        discoverOverlay4();
-                    }
-                    if(marker.equals(firstPOI)){
-                        firstAchievementOverlay();
-                    }
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        if (marker.equals(dreiBild))
+                        {
+                            discoverOverlay();
+                        }
+                        if (marker.equals(meditation))
+                        {
+                            discoverOverlay2();
+                        }
 
-                    return false;
-                }
+                        return false;
+                    }
                 });
+
 
                 googleMap.setMyLocationEnabled(true);
 
@@ -144,86 +134,31 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
         return rootView;
     }
 
-    private void discoverOverlay2() {
-
-            DiscoverOverlay2 nextFrag= new DiscoverOverlay2();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.mapView, nextFrag, "findThisFragment")
-                    .addToBackStack(null)
-                    .commit();
-
-    }
-
-    private void discoverOverlay4() {
-
-        DiscoverOverlay4 nextFrag= new DiscoverOverlay4();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mapView, nextFrag, "findThisFragment")
-                .addToBackStack(null)
-                .commit();
-
-    }
-
-    private void firstAchievementOverlay() {
-
-        FirstAchievementOverlay nextFrag= new FirstAchievementOverlay();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mapView, nextFrag, "findThisFragment")
-                .addToBackStack(null)
-                .commit();
-
-    }
-
-    private void discoverOverlay3() {
-
-        DiscoverOverlay3 nextFrag= new DiscoverOverlay3();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mapView, nextFrag, "findThisFragment")
-                .addToBackStack(null)
-                .commit();
-
-    }
-
-    private void discoverOverlay() {
-        DiscoverOverlay nextFrag= new DiscoverOverlay();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mapView, nextFrag, "findThisFragment")
-                .addToBackStack(null)
-                .commit();
-    }
-
     private void createMarkers(GoogleMap mMap) {
         LatLng raumZurMeditation = new LatLng(48.421333, 9.955561);
         LatLng dreiBildsaeulen = new LatLng(48.421459, 9.956280);
         LatLng ulmerSpitze = new LatLng(48.421900, 9.956953);
         LatLng fourOpenRectangles = new LatLng(48.422235, 9.957506);
-        LatLng wegkapelle = new LatLng(48.394776, 9.952822);
-        LatLng klosterhof = new LatLng(48.396333, 9.954621);
-        LatLng poete = new LatLng(48.423343, 9.952609);
         LatLng firstPOIT = new LatLng(48.423573, 9.956659);
 
 
         firstPOI = mMap.addMarker(new MarkerOptions().position(firstPOIT).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("FirstPOI"));
-        laPoete = mMap.addMarker(new MarkerOptions().position(poete).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("poete"));
-        dreiBild = mMap.addMarker(new MarkerOptions().position(dreiBildsaeulen).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Drei Bildsäulen"));
+
+        dreiBild = mMap.addMarker(new MarkerOptions().position(dreiBildsaeulen).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)).title("Drei Bildsäulen"));
         meditation = mMap.addMarker(new MarkerOptions().position(raumZurMeditation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Raum zur Meditation"));
-        wegkapelleM = mMap.addMarker(new MarkerOptions().position(wegkapelle).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Wegkapelle"));
         mMap.addMarker(new MarkerOptions().position(ulmerSpitze).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Ulmer Spitze"));
         mMap.addMarker(new MarkerOptions().position(fourOpenRectangles).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Four Open Rectangles"));
-        mMap.addMarker(new MarkerOptions().position(klosterhof).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Klosterhof"));
-
-
     }
 
 
     private void zoomToUni(GoogleMap mMap) {
-        LatLng uni = new LatLng(48.4218, 9.9557);
+        LatLng uni = new LatLng(48.423573, 9.956659);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(uni));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(uni,15));
         // Zoom in, animating the camera.
         mMap.animateCamera(CameraUpdateFactory.zoomIn());
         // Zoom out to zoom level 10, animating with a duration of 2 seconds.
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(18), 0050, null);
     }
 
     private void getMapStyle(GoogleMap googleMap) {
@@ -289,6 +224,24 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
         super.onLowMemory();
         mMapView.onLowMemory();
     }
+    private void discoverOverlay2() {
+
+        DiscoverOverlay2 nextFrag= new DiscoverOverlay2();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.overlay1, nextFrag, "findThisFragment")
+                .addToBackStack(null)
+                .commit();
+
+    }
+
+    private void discoverOverlay() {
+        DiscoverOverlay nextFrag= new DiscoverOverlay();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.overlay1, nextFrag, "findThisFragment")
+                .addToBackStack(null)
+                .commit();
+    }
+
 
 
     @Override

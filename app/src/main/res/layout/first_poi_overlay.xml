@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:id="@+id/first_poi_overlay"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapViewFirstPoiOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#99000000"/>
+
+
+
+
+    <LinearLayout
+        android:background="#083b66"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        >
+
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:text="Errungenschaft: Erster POI" />
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="192dp"
+            android:layout_height="130dp"
+            android:src="@drawable/place_localizer_white"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="16dp"
+            android:padding="10dp"
+
+            />
+
+
+
+    </LinearLayout>
+</RelativeLayout>
