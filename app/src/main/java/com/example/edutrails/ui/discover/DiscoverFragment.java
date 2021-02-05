@@ -49,7 +49,7 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
     public final int REQEST_CODE_PERMISSION = 111;
     private static final String TAG = com.example.edutrails.ui.startTour.StartTourFragment.class.getSimpleName();
     Marker dreiBild;
-    Marker meditation, wegkapelleM, laPoete, firstPOI;
+    Marker meditation, wegkapelleM, laPoete, firstPOI, ulmerSpitze1;
 
     LocationManager mLocationManager;
     Location currentLocation;
@@ -71,29 +71,40 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
 
         mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-        if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext()
-                , Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQEST_CODE_PERMISSION
-            );
 
-        } else {
-            getCurrentLocation();
-        }
 
-        currentLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        longitude = currentLocation.getLongitude();
-        latitude = currentLocation.getLatitude();
 
         /**get location**/
 
         final LocationListener mLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(final Location location) {
+
+                if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext()
+                        , Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(
+                            getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQEST_CODE_PERMISSION
+                    );
+
+                } else {
+                    getCurrentLocation();
+                }
+                currentLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 longitude = currentLocation.getLongitude();
                 latitude = currentLocation.getLatitude();
+
+
+                Log.i("Testoutput", "asdflkasdjflaksdfj");
+                Location locationTets = new Location("");
+                locationTets.setLatitude(48.422235);
+                locationTets.setLongitude(9.957506);
+                float distance = currentLocation.distanceTo(locationTets);
+                String dis = Float.toString(distance);
+
+
+                ulmerSpitze1.setTitle(dis);
             }
 
             @Override
@@ -264,19 +275,14 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
         LatLng poete = new LatLng(48.423343, 9.952609);
         LatLng firstPOIT = new LatLng(48.423573, 9.956659);
 
-        Location locationTets = new Location("");
-        locationTets.setLatitude(48.422235);
-        locationTets.setLongitude(9.957506);
-        float distance = currentLocation.distanceTo(locationTets);
-        String dis = Float.toString(distance);
 
         firstPOI = mMap.addMarker(new MarkerOptions().position(firstPOIT).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("FirstPOI"));
         laPoete = mMap.addMarker(new MarkerOptions().position(poete).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("poete"));
         dreiBild = mMap.addMarker(new MarkerOptions().position(dreiBildsaeulen).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Drei Bildsäulen"));
         meditation = mMap.addMarker(new MarkerOptions().position(raumZurMeditation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Raum zur Meditation"));
         wegkapelleM = mMap.addMarker(new MarkerOptions().position(wegkapelle).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Wegkapelle"));
-        mMap.addMarker(new MarkerOptions().position(ulmerSpitze).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Ulmer Spitze"));
-        mMap.addMarker(new MarkerOptions().position(fourOpenRectangles).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title(dis));
+        ulmerSpitze1 = mMap.addMarker(new MarkerOptions().position(ulmerSpitze).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Ulmer Spitze"));
+        mMap.addMarker(new MarkerOptions().position(fourOpenRectangles).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Four Open Rectangles"));
         mMap.addMarker(new MarkerOptions().position(klosterhof).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Klosterhof"));
 
 
