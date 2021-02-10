@@ -2,11 +2,9 @@ package com.example.edutrails.ui.discover;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -21,25 +19,17 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.edutrails.ContentScreen;
 import com.example.edutrails.R;
-import com.example.edutrails.ui.startTour.StartTourFragment;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import static android.content.Context.LOCATION_SERVICE;
 
 
 public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
@@ -49,11 +39,12 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
     public final int REQEST_CODE_PERMISSION = 111;
     private static final String TAG = com.example.edutrails.ui.startTour.StartTourFragment.class.getSimpleName();
     Marker dreiBild;
-    Marker meditation, wegkapelleM, laPoete, firstPOI, ulmerSpitze1;
+    Marker meditation, wegkapelleM, laPoete, firstPOI, ulmerSpitze1, fourOpenRectangles1;
 
     LocationManager mLocationManager;
     Location currentLocation;
     double longitude, latitude;
+    boolean isUlmerSpitzeClicked, isFourOpenRectanglesClicked;
 
 
     @Override
@@ -64,6 +55,7 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume(); // needed to get the map to display immediately
+        initVariables();
 
 
 
@@ -95,16 +87,15 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
                 longitude = currentLocation.getLongitude();
                 latitude = currentLocation.getLatitude();
 
+                if(isUlmerSpitzeClicked){
+                    isFourOpenRectanglesClicked = false;
+                    showDistanceToMarker(currentLocation, ulmerSpitze1);
+                }
+                if(isFourOpenRectanglesClicked){
+                    isUlmerSpitzeClicked = false;
+                    showDistanceToMarker(currentLocation, fourOpenRectangles1 );
+                }
 
-                Log.i("Testoutput", "asdflkasdjflaksdfj");
-                Location locationTets = new Location("");
-                locationTets.setLatitude(48.422235);
-                locationTets.setLongitude(9.957506);
-                float distance = currentLocation.distanceTo(locationTets);
-                String dis = Float.toString(distance);
-
-
-                ulmerSpitze1.setTitle(dis);
             }
 
             @Override
@@ -123,7 +114,14 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
             }
         };
 
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, mLocationListener);
+
+
+
+
+
+
+
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 5, mLocationListener);
 
 
 
@@ -170,12 +168,20 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
                     {
                         discoverOverlay3();
                     }
-                    if (marker.equals(laPoete))
+                    if (marker.equals(fourOpenRectangles1))
                     {
-                        discoverOverlay4();
+                        isUlmerSpitzeClicked = false;
+                        isFourOpenRectanglesClicked = true;
+                        showDistanceToMarker(currentLocation, fourOpenRectangles1);
+                        //discoverOverlay4();
                     }
                     if(marker.equals(firstPOI)){
                         firstAchievementOverlay();
+                    }
+                    if(marker.equals(ulmerSpitze1)){
+                        isFourOpenRectanglesClicked = false;
+                        isUlmerSpitzeClicked = true;
+                        showDistanceToMarker(currentLocation, ulmerSpitze1);
                     }
 
                     return false;
@@ -183,6 +189,7 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
                 });
 
                 googleMap.setMyLocationEnabled(true);
+
 
                 // Setting a click event handler for the map
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -212,9 +219,28 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
 
 
 
+
         });
 
+
         return rootView;
+    }
+
+    private static void showDistanceToMarker(Location currentLocation, Marker marker) {
+        Log.i("Testoutput", "test5");
+        Location markerLocation = new Location("");
+        markerLocation.setLatitude(marker.getPosition().latitude);
+        markerLocation.setLongitude(marker.getPosition().longitude);
+
+        double distance = Math.floor(currentLocation.distanceTo(markerLocation));
+        String dis = Integer.toString((int) distance);
+        marker.setSnippet(dis + " m");
+        marker.showInfoWindow();
+    }
+
+    private void initVariables() {
+        isUlmerSpitzeClicked = false;
+        isFourOpenRectanglesClicked = false;
     }
 
     private void discoverOverlay2() {
@@ -282,7 +308,7 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
         meditation = mMap.addMarker(new MarkerOptions().position(raumZurMeditation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Raum zur Meditation"));
         wegkapelleM = mMap.addMarker(new MarkerOptions().position(wegkapelle).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Wegkapelle"));
         ulmerSpitze1 = mMap.addMarker(new MarkerOptions().position(ulmerSpitze).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Ulmer Spitze"));
-        mMap.addMarker(new MarkerOptions().position(fourOpenRectangles).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Four Open Rectangles"));
+        fourOpenRectangles1 = mMap.addMarker(new MarkerOptions().position(fourOpenRectangles).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Four Open Rectangles"));
         mMap.addMarker(new MarkerOptions().position(klosterhof).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Klosterhof"));
 
 
