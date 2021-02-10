@@ -2,20 +2,27 @@ package com.example.edutrails.ui.discover;
 
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -32,7 +39,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
+public class Tutorial extends Fragment implements GoogleMap.OnMarkerClickListener {
 
     MapView mMapView;
     private GoogleMap googleMap;
@@ -44,9 +51,10 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
     LocationManager mLocationManager;
     Location currentLocation;
     double longitude, latitude;
-    boolean isUlmerSpitzeClicked, isFourOpenRectanglesClicked;
+    boolean isUlmerSpitzeClicked, isFourOpenRectanglesClicked, hasDialogPoppedUp;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_start_tour, container, false);
@@ -58,8 +66,22 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
         initVariables();
 
 
+/**
+        View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.popup1, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        popupWindow.setElevation(20);
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+        popupWindow.showAsDropDown(popupView, 0, 0);
+
+*/
+
+
 
         /**get location*/
+        
+        openDialog("Herzlich Willkommen bei Edutrails.", "Der nächst gelegene POI wurde markiert. Begebe dich zu ihm und entdecke dein erstes Ziel in der realen Welt.");
+
 
         mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -96,6 +118,17 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
                 currentLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 longitude = currentLocation.getLongitude();
                 latitude = currentLocation.getLatitude();
+
+                Location dreiBildLocation = new Location("");
+                dreiBildLocation.setLatitude(dreiBild.getPosition().latitude);
+                dreiBildLocation.setLongitude(dreiBild.getPosition().longitude);
+
+                showDistanceToMarker(currentLocation, dreiBild);
+                if(currentLocation.distanceTo(dreiBildLocation) < 40 && !hasDialogPoppedUp){
+                    openDialog("Herzlichen Glückwunsch!", "Sie haben das Tutorial erfolgreich abgeschlossen. Sie haben eine Medaille erhalten und können diese unter Errungenschaften einsehen.");
+                    showDistanceToMarker(currentLocation, dreiBild);
+                    hasDialogPoppedUp = true;
+                }
 
                 if(isUlmerSpitzeClicked){
                     isFourOpenRectanglesClicked = false;
@@ -164,38 +197,38 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
                 }
 
                 googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    if (marker.equals(dreiBild))
-                    {
-                        discoverOverlay();
-                    }
-                    if (marker.equals(meditation))
-                    {
-                        discoverOverlay2();
-                    }
-                    if (marker.equals(wegkapelleM))
-                    {
-                        discoverOverlay3();
-                    }
-                    if (marker.equals(fourOpenRectangles1))
-                    {
-                        isUlmerSpitzeClicked = false;
-                        isFourOpenRectanglesClicked = true;
-                        showDistanceToMarker(currentLocation, fourOpenRectangles1);
-                        //discoverOverlay4();
-                    }
-                    if(marker.equals(firstPOI)){
-                        firstAchievementOverlay();
-                    }
-                    if(marker.equals(ulmerSpitze1)){
-                        isFourOpenRectanglesClicked = false;
-                        isUlmerSpitzeClicked = true;
-                        showDistanceToMarker(currentLocation, ulmerSpitze1);
-                    }
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        if (marker.equals(dreiBild))
+                        {
+                            discoverOverlay();
+                        }
+                        if (marker.equals(meditation))
+                        {
+                            discoverOverlay2();
+                        }
+                        if (marker.equals(wegkapelleM))
+                        {
+                            discoverOverlay3();
+                        }
+                        if (marker.equals(fourOpenRectangles1))
+                        {
+                            isUlmerSpitzeClicked = false;
+                            isFourOpenRectanglesClicked = true;
+                            showDistanceToMarker(currentLocation, fourOpenRectangles1);
+                            //discoverOverlay4();
+                        }
+                        if(marker.equals(firstPOI)){
+                            firstAchievementOverlay();
+                        }
+                        if(marker.equals(ulmerSpitze1)){
+                            isFourOpenRectanglesClicked = false;
+                            isUlmerSpitzeClicked = true;
+                            showDistanceToMarker(currentLocation, ulmerSpitze1);
+                        }
 
-                    return false;
-                }
+                        return false;
+                    }
                 });
 
                 googleMap.setMyLocationEnabled(true);
@@ -236,6 +269,11 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
         return rootView;
     }
 
+    private void openDialog(String title, String desc) {
+        TutorialDialog tutorialDialog = new TutorialDialog(title, desc);
+        tutorialDialog.show(getActivity().getSupportFragmentManager(), "adsfkljöasdöflk");
+    }
+
     private static void showDistanceToMarker(Location currentLocation, Marker marker) {
         Log.i("Testoutput", "test5");
         Location markerLocation = new Location("");
@@ -249,17 +287,18 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
     }
 
     private void initVariables() {
+        hasDialogPoppedUp = false;
         isUlmerSpitzeClicked = false;
         isFourOpenRectanglesClicked = false;
     }
 
     private void discoverOverlay2() {
 
-            DiscoverOverlay2 nextFrag= new DiscoverOverlay2();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.mapView, nextFrag, "findThisFragment")
-                    .addToBackStack(null)
-                    .commit();
+        DiscoverOverlay2 nextFrag= new DiscoverOverlay2();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mapView, nextFrag, "findThisFragment")
+                .addToBackStack(null)
+                .commit();
 
     }
 
@@ -314,12 +353,14 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
 
         firstPOI = mMap.addMarker(new MarkerOptions().position(firstPOIT).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("FirstPOI"));
         laPoete = mMap.addMarker(new MarkerOptions().position(poete).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("poete"));
-        dreiBild = mMap.addMarker(new MarkerOptions().position(dreiBildsaeulen).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Drei Bildsäulen"));
+        dreiBild = mMap.addMarker(new MarkerOptions().position(dreiBildsaeulen).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)).title("Drei Bildsäulen"));
         meditation = mMap.addMarker(new MarkerOptions().position(raumZurMeditation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Raum zur Meditation"));
         wegkapelleM = mMap.addMarker(new MarkerOptions().position(wegkapelle).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Wegkapelle"));
         ulmerSpitze1 = mMap.addMarker(new MarkerOptions().position(ulmerSpitze).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Ulmer Spitze"));
         fourOpenRectangles1 = mMap.addMarker(new MarkerOptions().position(fourOpenRectangles).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Four Open Rectangles"));
         mMap.addMarker(new MarkerOptions().position(klosterhof).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)).title("Klosterhof"));
+
+        showDistanceToMarker(currentLocation, dreiBild);
 
 
     }

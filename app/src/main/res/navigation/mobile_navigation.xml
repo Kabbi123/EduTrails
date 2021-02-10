@@ -40,4 +40,10 @@
         android:name="com.example.edutrails.ui.createTour.CreateTourFragment"
         android:label="@string/menu_my_edu"
         tools:layout="@layout/fragment_my_edu" />
+
+    <fragment
+        android:id="@+id/nav_tutorial"
+        android:name="com.example.edutrails.ui.discover.Tutorial"
+        android:label="Tutorial"
+        tools:layout="@layout/tutorial" />
 </navigation>

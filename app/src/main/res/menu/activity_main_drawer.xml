@@ -30,6 +30,10 @@
             android:id="@+id/nav_my_edu"
             android:icon="@drawable/ic_menu_my_edu"
             android:title="@string/menu_my_edu" />
+        <item
+            android:id="@+id/nav_tutorial"
+            android:icon="@drawable/ic_menu_my_edu"
+            android:title="Tutorial" />
 
     </group>
 </menu>
