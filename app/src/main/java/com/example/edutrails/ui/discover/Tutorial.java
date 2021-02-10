@@ -2,9 +2,7 @@ package com.example.edutrails.ui.discover;
 
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
@@ -201,30 +199,32 @@ public class Tutorial extends Fragment implements GoogleMap.OnMarkerClickListene
                     public boolean onMarkerClick(Marker marker) {
                         if (marker.equals(dreiBild))
                         {
-                            discoverOverlay();
+                            showMarkerInfoInPopup(R.layout.fragment_dreibild_popup);
                         }
                         if (marker.equals(meditation))
                         {
-                            discoverOverlay2();
+                            showMarkerInfoInPopup(R.layout.fragment_meditation_popup);
                         }
                         if (marker.equals(wegkapelleM))
                         {
-                            discoverOverlay3();
+                            showMarkerInfoInPopup(R.layout.fragment_wegkapelle_popup);
                         }
                         if (marker.equals(fourOpenRectangles1))
                         {
                             isUlmerSpitzeClicked = false;
                             isFourOpenRectanglesClicked = true;
                             showDistanceToMarker(currentLocation, fourOpenRectangles1);
-                            //discoverOverlay4();
                         }
                         if(marker.equals(firstPOI)){
-                            firstAchievementOverlay();
+                            openDialog("Errungenschaft", "Glückwunsch, du hast deinen ersten POI Freigeschalten");
                         }
                         if(marker.equals(ulmerSpitze1)){
                             isFourOpenRectanglesClicked = false;
                             isUlmerSpitzeClicked = true;
                             showDistanceToMarker(currentLocation, ulmerSpitze1);
+                        }
+                        if(marker.equals(laPoete)){
+                            showMarkerInfoInPopup(R.layout.fragment_lapoete_popup);
                         }
 
                         return false;
@@ -269,6 +269,12 @@ public class Tutorial extends Fragment implements GoogleMap.OnMarkerClickListene
         return rootView;
     }
 
+    private void showMarkerInfoInPopup(int fragment) {
+        View popupView = LayoutInflater.from(getActivity()).inflate(fragment, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupWindow.showAtLocation(popupView, Gravity.BOTTOM|Gravity.LEFT, 0, 0);
+    }
+
     private void openDialog(String title, String desc) {
         TutorialDialog tutorialDialog = new TutorialDialog(title, desc);
         tutorialDialog.show(getActivity().getSupportFragmentManager(), "adsfkljöasdöflk");
@@ -292,53 +298,8 @@ public class Tutorial extends Fragment implements GoogleMap.OnMarkerClickListene
         isFourOpenRectanglesClicked = false;
     }
 
-    private void discoverOverlay2() {
 
-        DiscoverOverlay2 nextFrag= new DiscoverOverlay2();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mapView, nextFrag, "findThisFragment")
-                .addToBackStack(null)
-                .commit();
 
-    }
-
-    private void discoverOverlay4() {
-
-        DiscoverOverlay4 nextFrag= new DiscoverOverlay4();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mapView, nextFrag, "findThisFragment")
-                .addToBackStack(null)
-                .commit();
-
-    }
-
-    private void firstAchievementOverlay() {
-
-        FirstAchievementOverlay nextFrag= new FirstAchievementOverlay();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mapView, nextFrag, "findThisFragment")
-                .addToBackStack(null)
-                .commit();
-
-    }
-
-    private void discoverOverlay3() {
-
-        DiscoverOverlay3 nextFrag= new DiscoverOverlay3();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mapView, nextFrag, "findThisFragment")
-                .addToBackStack(null)
-                .commit();
-
-    }
-
-    private void discoverOverlay() {
-        DiscoverOverlay nextFrag= new DiscoverOverlay();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mapView, nextFrag, "findThisFragment")
-                .addToBackStack(null)
-                .commit();
-    }
 
     private void createMarkers(GoogleMap mMap) {
         LatLng raumZurMeditation = new LatLng(48.421333, 9.955561);
