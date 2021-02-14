@@ -31,6 +31,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -50,6 +52,7 @@ public class Tutorial extends Fragment implements GoogleMap.OnMarkerClickListene
     Location currentLocation;
     double longitude, latitude;
     boolean isUlmerSpitzeClicked, isFourOpenRectanglesClicked, hasDialogPoppedUp;
+    private PopupWindow popupWindow;
 
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -62,6 +65,10 @@ public class Tutorial extends Fragment implements GoogleMap.OnMarkerClickListene
 
         mMapView.onResume(); // needed to get the map to display immediately
         initVariables();
+
+
+        // create circle for own location marker
+
 
 
 /**
@@ -96,7 +103,6 @@ public class Tutorial extends Fragment implements GoogleMap.OnMarkerClickListene
 
 
 
-
         /**get location**/
 
         final LocationListener mLocationListener = new LocationListener() {
@@ -117,14 +123,16 @@ public class Tutorial extends Fragment implements GoogleMap.OnMarkerClickListene
                 longitude = currentLocation.getLongitude();
                 latitude = currentLocation.getLatitude();
 
+
                 Location dreiBildLocation = new Location("");
                 dreiBildLocation.setLatitude(dreiBild.getPosition().latitude);
                 dreiBildLocation.setLongitude(dreiBild.getPosition().longitude);
 
                 showDistanceToMarker(currentLocation, dreiBild);
-                if(currentLocation.distanceTo(dreiBildLocation) < 40 && !hasDialogPoppedUp){
+                if(currentLocation.distanceTo(dreiBildLocation) < 20 && !hasDialogPoppedUp){
                     openDialog("Herzlichen Glückwunsch!", "Sie haben das Tutorial erfolgreich abgeschlossen. Sie haben eine Medaille erhalten und können diese unter Errungenschaften einsehen.");
                     showDistanceToMarker(currentLocation, dreiBild);
+                    showMarkerInfoInPopup(R.layout.fragment_dreibild_popup);
                     hasDialogPoppedUp = true;
                 }
 
@@ -199,20 +207,24 @@ public class Tutorial extends Fragment implements GoogleMap.OnMarkerClickListene
                     public boolean onMarkerClick(Marker marker) {
                         if (marker.equals(dreiBild))
                         {
+                            dismisOtherPopups();
                             showMarkerInfoInPopup(R.layout.fragment_dreibild_popup);
                         }
                         if (marker.equals(meditation))
                         {
+                            dismisOtherPopups();
                             showMarkerInfoInPopup(R.layout.fragment_meditation_popup);
                         }
                         if (marker.equals(wegkapelleM))
                         {
+                            dismisOtherPopups();
                             showMarkerInfoInPopup(R.layout.fragment_wegkapelle_popup);
                         }
                         if (marker.equals(fourOpenRectangles1))
                         {
                             isUlmerSpitzeClicked = false;
                             isFourOpenRectanglesClicked = true;
+                            dismisOtherPopups();
                             showDistanceToMarker(currentLocation, fourOpenRectangles1);
                         }
                         if(marker.equals(firstPOI)){
@@ -221,9 +233,11 @@ public class Tutorial extends Fragment implements GoogleMap.OnMarkerClickListene
                         if(marker.equals(ulmerSpitze1)){
                             isFourOpenRectanglesClicked = false;
                             isUlmerSpitzeClicked = true;
+                            dismisOtherPopups();
                             showDistanceToMarker(currentLocation, ulmerSpitze1);
                         }
                         if(marker.equals(laPoete)){
+                            dismisOtherPopups();
                             showMarkerInfoInPopup(R.layout.fragment_lapoete_popup);
                         }
 
@@ -269,9 +283,15 @@ public class Tutorial extends Fragment implements GoogleMap.OnMarkerClickListene
         return rootView;
     }
 
+    private void dismisOtherPopups() {
+        if(popupWindow != null){
+            popupWindow.dismiss();
+        }
+    }
+
     private void showMarkerInfoInPopup(int fragment) {
         View popupView = LayoutInflater.from(getActivity()).inflate(fragment, null);
-        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         popupWindow.showAtLocation(popupView, Gravity.BOTTOM|Gravity.LEFT, 0, 0);
     }
 

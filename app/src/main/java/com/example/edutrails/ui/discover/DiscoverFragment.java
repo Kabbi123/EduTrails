@@ -50,6 +50,7 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
     Location currentLocation;
     double longitude, latitude;
     boolean isUlmerSpitzeClicked, isFourOpenRectanglesClicked;
+    PopupWindow popupWindow;
 
 
     @Override
@@ -174,30 +175,39 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
                 public boolean onMarkerClick(Marker marker) {
                     if (marker.equals(dreiBild))
                     {
+
+                        dismisOtherPopups();
                         showMarkerInfoInPopup(R.layout.fragment_dreibild_popup);
+
                     }
                     if (marker.equals(meditation))
                     {
+                            dismisOtherPopups();
                         showMarkerInfoInPopup(R.layout.fragment_meditation_popup);
                     }
                     if (marker.equals(wegkapelleM))
                     {
+                            dismisOtherPopups();
                         showMarkerInfoInPopup(R.layout.fragment_wegkapelle_popup);
                     }
                     if (marker.equals(fourOpenRectangles1))
                     {
+                            dismisOtherPopups();
                         isUlmerSpitzeClicked = false;
                         isFourOpenRectanglesClicked = true;
                         showDistanceToMarker(currentLocation, fourOpenRectangles1);
                     }
                     if(marker.equals(firstPOI)){
+                            dismisOtherPopups();
                     }
                     if(marker.equals(ulmerSpitze1)){
+                            dismisOtherPopups();
                         isFourOpenRectanglesClicked = false;
                         isUlmerSpitzeClicked = true;
                         showDistanceToMarker(currentLocation, ulmerSpitze1);
                     }
                     if(marker.equals(laPoete)){
+                            dismisOtherPopups();
                         showMarkerInfoInPopup(R.layout.fragment_lapoete_popup);
                     }
 
@@ -243,9 +253,15 @@ public class DiscoverFragment extends Fragment implements GoogleMap.OnMarkerClic
         return rootView;
     }
 
+    private void dismisOtherPopups() {
+        if(popupWindow != null){
+        popupWindow.dismiss();
+        }
+    }
+
     private void showMarkerInfoInPopup(int fragment) {
         View popupView = LayoutInflater.from(getActivity()).inflate(fragment, null);
-        final PopupWindow popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupWindow = new PopupWindow(popupView, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         popupWindow.showAtLocation(popupView, Gravity.BOTTOM|Gravity.LEFT, 0, 0);
     }
 
